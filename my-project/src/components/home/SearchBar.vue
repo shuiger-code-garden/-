@@ -1,9 +1,16 @@
 
 <template>
   <div class="search-bar">
-    <div class="search-bar-wrapper" @click="onSearchBarClick">
+    <div
+      class="search-bar-wrapper"
+      @click="onSearchBarClick"
+    >
       <div class="search">
-        <van-icon name="search" color="#858C96" size="15px" />
+        <van-icon
+          name="search"
+          color="#858C96"
+          size="15px"
+        />
       </div>
       <input
         :focus="focus"
@@ -18,8 +25,15 @@
         @input="onChange"
         @confirm="onConfirm"
       />
-      <div class="clear" @click="onClearClick">
-        <van-icon name="clear" color="#858C96" size="15px" />
+      <div
+        class="clear"
+        @click="onClearClick"
+      >
+        <van-icon
+          name="clear"
+          color="#858C96"
+          size="15px"
+        />
       </div>
     </div>
   </div>
@@ -47,32 +61,32 @@ export default {
   },
   data() {
     return {
-      searchWord: ""
+      searchWord: ''
     };
   },
   methods: {
-    onSearchBarClick(){
-       this.$emit('onClick')
+    onSearchBarClick() {
+      this.$emit('onClick')
     },
-    onClearClick(){
-       this.$emit('onClear')
+    onClearClick() {
+      this.$emit('onClear')
     },
-    onChange(e){
-       let {value} = e.mp.detail;
-       this.$emit('onChange', value);
+    onChange(e) {
+      let { value } = e.mp.detail
+      this.$emit('onChange', value)
     },
-    onConfirm(e){
+    onConfirm(e) {
 
     },
-    setValue(val){
-       this.searchWord = val;
+    setValue(val) {
+      this.searchWord = val
     },
-    getValue(val){
-       return this.searchWord;
-    },
+    getValue(val) {
+      return this.searchWord
+    }
 
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -95,7 +109,7 @@ export default {
     .search-bar-input {
       flex: 1;
       height: 100%;
-      color: "#333";
+      color: '#333';
       font-size: 14px;
       margin-left: 5px;
       background: transparent;
