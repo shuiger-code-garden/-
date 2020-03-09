@@ -12,12 +12,11 @@
     />
     <!-- 占位符 -->
     <img
-      src="https://www.youbaobao.xyz/book/img/loading2.ae9e5924.jpeg"
+       src="https://www.youbaobao.xyz/book/img/loading2.ae9e5924.jpeg"
       :class="round ? 'round image': 'image'"
       :mode="mode"
       :style="{ height }"
       :lazy-load="lazyLoad"
-      @load="onLoad"
       v-show="isLoading || error"
     />
   </div>

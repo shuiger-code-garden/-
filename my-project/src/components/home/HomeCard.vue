@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import ImageView from '../base/ImageV iew'
+import ImageView from "../base/ImageView";
 export default {
   components: {
     ImageView
   },
-  data () {
+  data() {
     return {
       data: {
         userInfo: {},
@@ -60,26 +60,26 @@ export default {
       },
       hasSign: false,
       signDay: 0
-    }
+    };
   },
   methods: {
-    onFeedback () {
+    onFeedback() {
       // eslint-disable-next-line no-undef
       Dialog.confirm({
-        title: '反馈',
-        message: '您是否确认提交反馈信息？',
-        confirmButtonText: '是',
-        cancelButtonText: '否'
+        title: "反馈",
+        message: "您是否确认提交反馈信息？",
+        confirmButtonText: "是",
+        cancelButtonText: "否"
       })
         .then(() => {
-          console.log('点击是之后的事件')
+          console.log("点击是之后的事件");
         })
         .catch(() => {
-          console.log('点击否之后的事件')
-        })
+          console.log("点击否之后的事件");
+        });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -134,7 +134,6 @@ export default {
         flex: 1;
         display: flex;
         justify-content: space-around;
-
         .book-img-wrapper {
           width: 72px;
           height: 101px;

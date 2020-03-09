@@ -1,13 +1,9 @@
-
 <template>
   <div class="banner">
-    <div
-      class="banner-wrapper"
-      :style="{backgroundImage: imgUrl}"
-    >
+    <div class="banner-wrapper" :style="{ backgroundImage: imgUrl }">
       <div class="banner-text-wrapper">
-        <div class="banner-title">{{title}}</div>
-        <div class="banner-des">{{subTitle}}</div>
+        <div class="banner-title">{{ title }}</div>
+        <div class="banner-des">{{ subTitle }}</div>
       </div>
     </div>
   </div>
@@ -16,25 +12,25 @@
 <script>
 export default {
   computed: {
-    imgUrl () {
-      return 'url(' + this.img + ')'
+    imgUrl() {
+      return "url(" + this.img + ")";
     }
   },
   props: {
     img: {
       type: String,
-      default: ''
+      default: ""
     },
     title: {
       type: String,
-      default: ''
+      default: ""
     },
     subTitle: {
       type: String,
-      default: ''
+      default: ""
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
