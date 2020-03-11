@@ -7,7 +7,7 @@
       title="mpvue2.0多端小程序开发"
       subTitle="马上学习"
     />
-    <HomeBook :data="recommed"  row="1" col="3"/>
+    <HomeBook title="为你推荐"  :data="recommed"  row="1" col="3" mode="col"/>
   </div>
 </template>
 

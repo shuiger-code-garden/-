@@ -4,19 +4,25 @@
     <div class="home-book-content">
       <div
         class="home-book-row"
-        v-for="(book, bookIndex) in bookData"
-        :key="bookIndex"
-        :style="{flex: '0 0 ' + (100/col) + '%'}"
+        v-for="(items, index) in bookData"
+        :key="index"
       >
-        <div class="home-book-col">
-          <div class="book-wrapper">
-            <ImageView :src="book.cover" />
-            <div class="book-tittle-wrapper">
-              <div class="book-title">{{book.title}}</div>
+        <div
+          class="home-book-col"
+          v-for="(book, bookIndex) in items"
+          :key="bookIndex"
+          :style="{flex: '0 0 ' + (100/col) + '%'}"
+        >
+          <div
+            class="book-wrapper"
+            :style="{flexDirection: mode === HOME_BOOK_MODE.COL ? 'column' : 'row'}"
+          >
+            <ImageView :src="book.cover"/>
+            <div class="book-tittle-wrapper book-title-col" v-if="mode === HOME_BOOK_MODE.COL">
+              <div class="book-title">{{book.text}}</div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -24,7 +30,9 @@
 
 <script>
 
-import ImageView from "../base/ImageView";
+import ImageView from "../base/ImageView"
+import { HOME_BOOK_MODE, CATEGORY } from "@/utils/const"
+
 export default {
   components: {
     ImageView
@@ -68,10 +76,15 @@ export default {
     }
   },
   computed: {
+    HOME_BOOK_MODE() {
+      return HOME_BOOK_MODE;
+    },
     bookData() {
       const { data, row, col } = this;
       if (data && data.length > 0) {
-
+        data.forEach(book => {
+          book.text = CATEGORY[book.categoryText.toLowerCase()]
+        })
         const number = row * col; // 总共多少数量
         const _bookData = data.slice(0, number);
         const _bookDataRow = [];
@@ -96,6 +109,8 @@ export default {
 .home-book {
   .home-book-header {
     padding: 13px 0 0 20.5px;
+    font-size: 21px;
+    font-weight: 500;
   }
   .home-book-content {
     padding: 0 12px;
@@ -105,11 +120,22 @@ export default {
       flex-flow: row nowrap;
       margin-top: 12px;
       .home-book-col {
-         padding: 0 8px;
-         box-sizing: border-box;
-         .book-wrapper{
-            display: flex;
-         }
+        padding: 0 8px;
+        box-sizing: border-box;
+        .book-wrapper {
+          display: flex;
+          .book-title-col {
+            .book-title {
+              color: #212731;
+              font-size: 12px;
+              line-height: 16.5px;
+              max-height: 35.5px;
+              font-weight: 500;
+              overflow: hidden;
+              word-break: break-word;
+            }
+          }
+        }
       }
     }
   }

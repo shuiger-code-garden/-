@@ -46,7 +46,9 @@
 </template>
 
 <script>
-import ImageView from "../base/ImageView";
+import ImageView from "../base/ImageView"
+import Dialog from 'vant-weapp/dist/dialog/dialog'
+
 export default {
   components: {
     ImageView
