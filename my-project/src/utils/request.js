@@ -1,6 +1,4 @@
-
-
-//mpvuePlatform 全局变量 判断小程序类型
+// mauvePlatform 全局变量 判断小程序类型
 function createFly() {
   if (mpvuePlatform === "wx") {
     const Fly = require("flyio/dist/npm/wx");
@@ -15,9 +13,10 @@ export function get(url, params = {}) {
     return new Promise((resolve, reject) => {
       fly
         .get(url, params)
-        .then(value => {
-          console.log(value);
-          resolve(value);
+        .then(response => {
+          if (response.data.error_code === 0) {
+            resolve(response.data);
+          }
         })
         .catch(err => {
           handleError(err);
@@ -34,8 +33,9 @@ export function post(url, params = {}) {
       fly
         .post(url, params)
         .then(response => {
-          console.log(response);
-          resolve(response);
+          if (response.data.error_code === 0) {
+            resolve(response.data);
+          }
         })
         .catch(err => {
           handleError(err);

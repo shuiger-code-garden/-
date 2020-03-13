@@ -3,63 +3,59 @@
     <div class="home-card-inner">
       <div class="user-info">
         <div class="avatar-wrapper">
-          <ImageView
-            src="https://www.youbaobao.xyz/mpvue-res/logo.jpg"
-            round
-          />
+          <ImageView src="https://www.youbaobao.xyz/mpvue-res/logo.jpg" round />
         </div>
         <div class="nickname">{{ "米老鼠" }}</div>
-        <div class="shelf-text">书架共有{{ 3 }}本好书</div>
+        <div class="shelf-text">书架共有 {{ data.num }} 本好书</div>
         <div class="round-item"></div>
         <div class="shelf-text">特别精选</div>
       </div>
       <div class="book-info">
         <div class="book-wrapper">
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg" />
-          </div>
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg" />
-          </div>
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg" />
+          <div class="book-img-wrapper" v-for="(bookList, index) in bookList" :key="index">
+            <ImageView :src="bookList.cover" />
           </div>
         </div>
         <div class="shelf-wrapper">
           <div class="shelf">书架</div>
-          <van-icon
-            class="arrow"
-            name="arrow"
-            size="11px"
-            color="#828489"
-          ></van-icon>
+          <van-icon class="arrow" name="arrow" size="11px" color="#828489"></van-icon>
         </div>
       </div>
       <div class="feedback-wrapper"></div>
-      <div
-        class="feedback-text"
-        @click="onFeedback"
-      >反馈</div>
+      <div class="feedback-text" @click="onFeedback">反馈</div>
     </div>
     <van-dialog id="van-dialog" />
   </div>
 </template>
 
 <script>
-import ImageView from "../base/ImageView"
-import Dialog from 'vant-weapp/dist/dialog/dialog'
+import ImageView from "../base/ImageView";
+import Dialog from "vant-weapp/dist/dialog/dialog";
 
 export default {
   components: {
     ImageView
   },
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
+  computed: {
+    bookList() {
+      return this.data.bookList;
+    }
+  },
   data() {
     return {
-      data: {
-        userInfo: {},
-        bookList: [],
-        num: 0
-      },
+      // data: {
+      //   userInfo: {},
+      //   bookList: [],
+      //   num: 0
+      // },
       hasSign: false,
       signDay: 0
     };
