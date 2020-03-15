@@ -1,11 +1,52 @@
 <template>
-  <div class="home">
-    <SearchBar disabled :hotSearch="hotSearch" />
-    <HomeCard :data="homeCard" />
-    <HomeBanner :img="banner.img" :title="banner.title" :subTitle="banner.subTitle" />
-    <HomeBook title="为你推荐" :data="recommend" :row="1" :col="3" mode="col" />
-    <HomeBook title="免费阅读" :row="2" :col="2" :data="freeRead" mode="row" />
-    <HomeBook title="免费阅读" :row="2" :col="2" :data="category" mode="category" />
+  <div>
+    <div
+      class="home"
+      v-if="isAuth"
+    >
+      <SearchBar
+        disabled
+        :hotSearch="hotSearch"
+      />
+      <HomeCard :data="homeCard" />
+      <HomeBanner
+        :img="banner.img"
+        :title="banner.title"
+        :subTitle="banner.subTitle"
+      />
+      <div :style="{marginTop: '23px'}">
+        <HomeBook
+          title="为你推荐"
+          :data="recommend"
+          :row="1"
+          :col="3"
+          mode="col"
+        />
+      </div>
+      <div :style="{marginTop: '23px'}">
+        <HomeBook
+          title="免费阅读"
+          :row="2"
+          :col="2"
+          :data="freeRead"
+          mode="row"
+        />
+      </div>
+      <div :style="{marginTop: '23px'}">
+        <HomeBook
+          title="免费阅读"
+          :row="2"
+          :col="2"
+          :data="category"
+          mode="category"
+        />
+      </div>
+
+    </div>
+    <Login
+      @getUserInfo="init"
+      v-if="!isAuth"
+    />
   </div>
 </template>
 
@@ -14,13 +55,25 @@ import SearchBar from "../../components/home/SearchBar";
 import HomeCard from "../../components/home/HomeCard";
 import HomeBanner from "../../components/home/HomeBanner";
 import HomeBook from "../../components/home/HomeBook";
-import { getHomeData } from "@/api/index";
+import Login from "../../components/base/login";
+import { getHomeData, register } from "@/api/index";
+import {
+  getSetting,
+  getUserInfo,
+  setStorageSync,
+  getStorageSync,
+  getUserOpenId,
+  showLoading,
+  hideLoading
+} from "@/api/watch";
+
 export default {
   components: {
     SearchBar,
     HomeCard,
     HomeBanner,
-    HomeBook
+    HomeBook,
+    Login
   },
   data() {
     return {
@@ -30,17 +83,17 @@ export default {
       freeRead: [],
       category: [],
       hotBook: [],
-      homeCard: {}
+      homeCard: {},
+      isAuth: true,
     };
   },
-  mounted() {
-    this.getHomeData("1234");
+  created() {
+    this.init();
   },
   methods: {
-    getHomeData(openId) {
+    getHomeData(openId, userInfo) {
       getHomeData({ openId })
         .then(response => {
-          console.log(response);
           const {
             hotSearch: { keyword },
             shelf,
@@ -60,12 +113,55 @@ export default {
           this.category = category;
           this.homeCard = {
             bookList: shelf,
-            num: shelfCount
+            num: shelfCount,
+            userInfo
           };
+          hideLoading();
         })
         .catch(err => {
+          hideLoading();
           console.log(err);
         });
+    },
+    getUserInfo() {
+
+      const onOpenIdComplete = (openId, userInfo) => {
+        this.getHomeData(openId, userInfo);
+        register({
+          openId,
+          ...userInfo
+        })
+      }
+      getUserInfo(userInfo => {
+        setStorageSync('userInfo', userInfo)
+        // 通过openId 是否登录
+        const openId = getStorageSync('openId')
+        if (!openId || openId.length === 0) {
+          getUserOpenId(
+            openId => {
+              onOpenIdComplete(openId, userInfo)
+            })
+        } else {
+          onOpenIdComplete(openId, userInfo)
+        }
+      }, () => {
+        console.log('获取用户信息失败')
+      });
+    },
+
+    getSetting() {
+      getSetting('userInfo', () => {
+        this.isAuth = true
+        showLoading();
+        this.getUserInfo()
+      }, () => {
+        this.isAuth = false
+      });
+    },
+    init() {
+      // 判断用户是否获取到权限-》获取用户信息 -》获取openid
+      // -->获取到openId登录成功 -》 调用接口获取数据
+      this.getSetting();
     }
   }
 };

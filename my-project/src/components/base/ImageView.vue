@@ -1,8 +1,8 @@
 <template>
-  <div class="image-view" @click="onClick">
+  <div class="image-view" @click="onClick" :style="{ height }">
     <img
       :src="src"
-      :style="{ height }"
+       :style="{ height }"
       :class="round ? 'round image': 'image'"
       :mode="mode"
       :lazy-load="lazyLoad"
